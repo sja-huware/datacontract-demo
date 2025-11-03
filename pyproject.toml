@@ -1,0 +1,7 @@
+[project]
+name = "data-contract-l2"
+version = "0.1.0"
+description = "Lesson 2 of the Data Mesh course - Data Contract."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
