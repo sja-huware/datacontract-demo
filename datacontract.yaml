@@ -1,0 +1,175 @@
+# Specifies the Data Contract Specification being used.
+# https://datacontract.com/CHANGELOG.html 
+dataContractSpecification: 1.2.1
+
+# An organization-wide unique technical identifier for the contract.
+id: cartoons-contract
+
+# Metadata and life cycle information about the data contract.
+info:
+  title: Cartoons Data Contract
+  version: 1.0.0
+  status: proposed
+  description: |
+    Contratto per i dati dei personaggi della serie Futurama e I Simpson.
+  owner: Team Data
+  contact:
+    name: Team Data
+    email: data-team@example.com
+
+# Specifies the servers of the data contract.
+servers:
+  production:
+    type: postgres
+    host: localhost
+    port: 5432
+    database: cartoons
+    schema: cartoons
+    username: sja-huware
+    password: postgres_psw
+
+# Terms and conditions.
+terms:
+  usage: |
+    Data can be used for reports, analytics and machine learning use cases.
+  limitations: |
+    Not suitable for real-time use cases.
+    Max data processing per day: 10 TiB
+  policies:
+    - name: privacy-policy
+      url: https://example.com/privacy-policy
+    - name: license
+      description: External data is licensed under agreement 1234.
+      url: https://example.com/license/1234
+  billing: 5000 USD per month
+  noticePeriod: P3M
+
+# Structure and semantics of a data model.
+models:
+  futurama:
+    type: table
+    description: Personaggi della serie Futurama
+    fields:
+      character_id:
+        type: integer
+        required: true
+        primaryKey : true
+        description: Identificativo univoco del personaggio
+      name:
+        type: varchar
+        required: true
+        description: Nome completo del personaggio
+      species:
+        type: varchar
+        required: true
+        description: Specie del personaggio
+      occupation:
+        type: varchar
+        description: Occupazione/professione
+      age:
+        type: integer
+        description: Età del personaggio
+        minimum: 0
+      planet_of_origin:
+        type: varchar
+        description: Pianeta di origine
+      first_appearance_year:
+        type: integer
+        description: Anno della prima apparizione
+      is_main_character:
+        type: boolean
+        required: true
+        description: Indica se è un personaggio principale
+
+  simpsons:
+    type: table
+    description: Personaggi della serie I Simpson
+    fields:
+      character_id:
+        type: integer
+        required: true
+        primaryKey : true
+        description: Identificativo univoco del personaggio
+      name:
+        type: varchar
+        required: true
+        description: Nome completo del personaggio
+      role:
+        type: varchar
+        description: Ruolo nella serie
+      age:
+        type: integer
+        description: Età del personaggio
+        minimum: 0
+      occupation:
+        type: varchar
+        description: Occupazione/professione
+      family_member:
+        type: boolean
+        required: true
+        description: Indica se fa parte della famiglia Simpson
+      first_appearance_year:
+        type: integer
+        description: Anno della prima apparizione
+      catchphrase:
+        type: varchar
+        description: Frase tipica del personaggio
+
+# Rules to be applied to the data to ensure its quality. Data can be verified by executing these checks through a data quality engine.
+quality:
+  type: SodaCL
+  specification: |
+    checks for futurama:
+      - duplicate_count(name) = 0
+      - missing_count(character_id) = 0
+      - missing_count(name) = 0
+      - invalid_count(age) = 0:
+          valid min: 0
+    
+    checks for simpsons:
+      - duplicate_count(name) = 0
+      - missing_count(character_id) = 0
+      - missing_count(name) = 0
+      - invalid_count(age) = 0:
+          valid min: 0
+
+# A service level is defined as an agreed-upon, measurable level of performance for provided the data.
+servicelevels:
+  availability: # The promised uptime of the system that provides the data
+    description: The server is available during support hours
+    percentage: 99.9%
+  retention: # The period how long data will be available.
+    description: Data is retained for one year
+    period: P1Y
+    unlimited: false
+  latency: # The maximum amount of time from the source to its destination.
+    description: Data is available within 25 hours after a new episode is released
+    threshold: 25h
+  freshness: # The maximum age of the youngest entry.
+    description: The age of the youngest row in a table.
+    threshold: 25h
+  frequency: # The update frequency.
+    description: Data is delivered once a day
+    type: batch
+    interval: daily
+    cron: 0 0 * * *
+  support: # The times when support is provided.
+    description: The data is available during typical business hours at headquarters
+    time: 9am to 5pm in EST on business days
+    responseTime: 1h
+  backup: # The details about data backup procedures.
+    description: Data is backed up once a week, every Sunday at 0:00 UTC.
+    interval: weekly
+    cron: 0 0 * * 0
+    recoveryTime: 24 hours
+    recoveryPoint: 1 week
+
+# Custom labels to provide additional context.
+tags:
+  - demo
+  - cartoons
+  - gcp
+
+# Additional external documentation links.
+links:
+  repository: https://github.com/sja-huware/datacontract-demo
