@@ -72,6 +72,43 @@ docker-compose down -v
 docker-compose up -d
 ```
 
+## Demo
+
+Eseguire i seguenti comandi di esempio per provare le funzionalità del progetto.
+
+### 1. Inizializzare un Data Contract base:
+
+```bash
+uv run datacontract init base.yaml
+```
+
+### 2. Creare un Data Contract da un file SQL:
+
+```bash
+uv run datacontract import --format sql --source ./init-scripts/create-tables.sql > datacontract_import.yaml
+```
+
+### 3. Linting del contratto:
+
+```bash
+uv run datacontract lint
+```
+
+### 4. Esportare schemi e modelli:
+
+```bash
+uv run datacontract export --format jsonschema --model futurama >> futurama_schema.json
+uv run datacontract export --format pydantic-model
+uv run datacontract export --format dbt
+uv run datacontract export --format html
+```
+
+### 5. Testare il Data Contract:
+
+```bash
+uv run datacontract test
+```
+
 ---
 
 Sviluppato con ❤️ da Jacopo Sardellini
