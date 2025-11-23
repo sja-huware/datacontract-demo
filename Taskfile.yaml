@@ -11,6 +11,7 @@ tasks:
       - task --list
     silent: true
 
+  # ----- Docker commands -----
   start:
     desc: "Start docker container."
     cmds:
@@ -21,4 +22,35 @@ tasks:
     desc: "Stop docker container."
     cmds:
       - docker compose down -v
+    silent: true
+  
+  # ----- Data Contract commands -----
+  init-contract:
+    desc: "Initialize a base data contract."
+    cmds:
+      - uv run datacontract init base.yaml
+    silent: true
+  
+  lint-contract:
+    desc: "Lint data contract."
+    cmds:
+      - uv run datacontract lint
+    silent: true
+
+  import-contract:
+    desc: "Import data contract from SQL file."
+    cmds:
+      - uv run datacontract import --format sql --source ./init-scripts/create-tables.sql > import.yaml
+    silent: true
+
+  export-contract:
+    desc: "Export data contract in jsonschema."
+    cmds:
+      - uv run datacontract export --format jsonschema --model futurama >> futurama_schema.json
+    silent: true
+  
+  test-contract:
+    desc: "Test data contract."
+    cmds:
+      - uv run datacontract test
     silent: true

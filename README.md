@@ -85,7 +85,7 @@ uv run datacontract init base.yaml
 ### 2. Creare un Data Contract da un file SQL:
 
 ```bash
-uv run datacontract import --format sql --source ./init-scripts/create-tables.sql > datacontract_import.yaml
+uv run datacontract import --format sql --source ./init-scripts/create-tables.sql > import.yaml
 ```
 
 ### 3. Linting del contratto:
