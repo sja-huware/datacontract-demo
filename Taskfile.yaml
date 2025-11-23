@@ -1,0 +1,24 @@
+# https://taskfile.dev
+
+## Specify the Taskfile format that this file conforms to.
+version: '3'
+
+# A set of task definitions.
+tasks:
+  default:
+    desc: 'List all available tasks.'
+    cmds:
+      - task --list
+    silent: true
+
+  start:
+    desc: "Start docker container."
+    cmds:
+      - docker compose up -d
+    silent: true
+
+  stop:
+    desc: "Stop docker container."
+    cmds:
+      - docker compose down -v
+    silent: true
